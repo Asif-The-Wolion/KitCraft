@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KitCraft — Custom Sports Kits, Designed by You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:#f8f7f4;color:#111;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+:root{
+  --ink:#0f0f0f;--ink2:#333;--muted:#888;
+  --bg:#f8f7f4;--bg2:#f0ede8;--white:#fff;
+  --accent:#1b4dff;--accent-l:#e8eeff;--accent-d:#1038cc;
+  --green:#0a8a4a;--border:rgba(0,0,0,.09);
+  --sh-sm:0 1px 4px rgba(0,0,0,.07);
+  --sh-md:0 4px 24px rgba(0,0,0,.09);
+  --sh-lg:0 12px 48px rgba(0,0,0,.12);
+  --r:12px;
+}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;height:60px;background:rgba(248,247,244,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:-.03em;margin-right:auto}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{font-size:.85rem;font-weight:500;color:var(--ink2);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-btn{background:var(--ink);color:var(--white);font-size:.8rem;font-weight:600;padding:9px 20px;border-radius:40px;transition:background .2s;white-space:nowrap}
+.nav-btn:hover{background:var(--accent)}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.nav-ham span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
+.nav-ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-ham.open span:nth-child(2){opacity:0}
+.nav-ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:var(--white);border-bottom:1px solid var(--border);z-index:299;padding:16px 24px 24px;flex-direction:column;gap:4px;box-shadow:var(--sh-md)}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:1rem;font-weight:500;padding:11px 0;border-bottom:1px solid var(--border);color:var(--ink2)}
+.mobile-menu .mob-cta{margin-top:12px;background:var(--ink);color:var(--white);text-align:center;padding:13px;border-radius:40px;font-weight:600;border:none;cursor:pointer}
+
+/* ── HERO ── */
+#hero{min-height:100vh;padding:100px 40px 64px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:48px;position:relative;overflow:hidden;background:var(--bg)}
+.hero-bg{position:absolute;top:-100px;right:-150px;width:600px;height:600px;background:radial-gradient(circle,#dce6ff,transparent 70%);border-radius:50%;z-index:0;pointer-events:none}
+.hero-left{position:relative;z-index:1}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:var(--accent-l);color:var(--accent);font-size:.72rem;font-weight:600;letter-spacing:.08em;padding:6px 14px;border-radius:40px;margin-bottom:24px;animation:fadeUp .5s ease both}
+.hero-pill-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.hero-title{font-family:'Syne',sans-serif;font-weight:800;line-height:1;letter-spacing:-.02em;font-size:clamp(2.4rem,5vw,5rem);margin-bottom:20px;animation:fadeUp .5s .08s ease both}
+.hero-title em{font-style:italic;font-weight:300;color:var(--muted)}
+.hero-desc{font-size:1rem;color:var(--ink2);line-height:1.7;max-width:420px;margin-bottom:32px;animation:fadeUp .5s .16s ease both}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .5s .24s ease both}
+.btn-primary{background:var(--ink);color:var(--white);font-size:.9rem;font-weight:600;padding:13px 26px;border-radius:40px;border:none;cursor:pointer;transition:background .2s,transform .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--ink);font-size:.9rem;font-weight:600;padding:12px 26px;border-radius:40px;border:1.5px solid var(--border);cursor:pointer;transition:border-color .2s,transform .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-outline:hover{border-color:var(--ink);transform:translateY(-2px)}
+.hero-trust{display:flex;align-items:center;gap:12px;margin-top:28px;animation:fadeUp .5s .32s ease both;flex-wrap:wrap}
+.trust-avatars{display:flex}
+.trust-avatar{width:30px;height:30px;border-radius:50%;border:2px solid var(--white);margin-left:-8px;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--white)}
+.trust-avatars .trust-avatar:first-child{margin-left:0}
+.trust-text{font-size:.8rem;color:var(--muted)}
+.trust-text strong{color:var(--ink)}
+.hero-right{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;animation:fadeUp .5s .12s ease both}
+.hero-jersey-wrap{background:var(--white);border-radius:20px;border:1px solid var(--border);box-shadow:var(--sh-lg);padding:28px 24px;width:100%;max-width:420px}
+.hero-jersey-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.jersey-sport-badge{background:var(--accent-l);color:var(--accent);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:20px}
+.jersey-live{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:var(--green)}
+.jersey-live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.hero-svg-wrap{display:flex;justify-content:center;margin-bottom:20px}
+.hero-color-row{display:flex;align-items:center;gap:8px;border-top:1px solid var(--border);padding-top:16px;flex-wrap:wrap}
+.hcr-label{font-size:.72rem;font-weight:500;color:var(--muted)}
+.hcr-swatches{display:flex;gap:6px;flex:1;flex-wrap:wrap}
+.hcr-swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .15s,box-shadow .15s}
+.hcr-swatch:hover{transform:scale(1.2)}
+.hcr-swatch.sel{box-shadow:0 0 0 2px var(--white),0 0 0 3.5px var(--ink)}
+.hcr-customize{font-size:.78rem;font-weight:600;color:var(--accent);cursor:pointer;white-space:nowrap}
+.hcr-customize:hover{text-decoration:underline}
+
+/* ── STATS ── */
+#statsbar{background:var(--ink);padding:24px 40px;display:grid;grid-template-columns:repeat(4,1fr)}
+.stat-item{text-align:center;padding:8px 12px;border-right:1px solid rgba(255,255,255,.1)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--white);letter-spacing:-.03em}
+.stat-num sub{font-size:1rem;vertical-align:baseline;color:var(--accent)}
+.stat-lbl{font-size:.72rem;color:rgba(255,255,255,.45);margin-top:4px}
+
+/* ── SECTION SHARED ── */
+.section-wrap{padding:80px 40px}
+.section-intro{max-width:640px;margin-bottom:52px}
+.lbl{font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:12px}
+.heading{font-family:'Syne',sans-serif;font-weight:700;line-height:1.1;letter-spacing:-.02em;font-size:clamp(1.8rem,3vw,2.8rem)}
+.section-intro p{font-size:.95rem;color:var(--ink2);line-height:1.7;margin-top:12px}
+
+/* ── SPORTS ── */
+#sports{background:var(--white)}
+.sports-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.sport-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:box-shadow .25s,transform .25s,border-color .25s;display:block}
+.sport-card:hover{box-shadow:var(--sh-md);transform:translateY(-4px);border-color:rgba(0,0,0,.18)}
+.sport-card-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
+.sport-card-body{padding:14px 16px 16px}
+.sport-card-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:3px;display:flex;justify-content:space-between}
+.sport-card-sub{font-size:.75rem;color:var(--muted)}
+.sport-card-arrow{color:var(--muted);transition:color .2s,transform .2s;font-size:.9rem}
+.sport-card:hover .sport-card-arrow{color:var(--accent);transform:translate(2px,-2px)}
+
+/* ── HOW ── */
+#how{background:var(--bg2)}
+.steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.step-card{background:var(--white);padding:40px 32px;transition:box-shadow .25s}
+.step-card:hover{box-shadow:var(--sh-md);z-index:1;position:relative}
+.step-num{font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.15em;color:var(--accent);margin-bottom:16px}
+.step-icon{width:48px;height:48px;background:var(--accent-l);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px}
+.step-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:8px}
+.step-desc{font-size:.85rem;color:var(--ink2);line-height:1.7}
+
+/* ── CONFIGURATOR ── */
+#configurator{background:var(--white)}
+.mobile-sport-tabs{display:none;overflow-x:auto;gap:8px;padding:0 0 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:16px}
+.mobile-sport-tabs::-webkit-scrollbar{display:none}
+.mob-sport-tab{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px solid var(--border);border-radius:40px;background:var(--bg);font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;color:var(--ink2);font-family:'DM Sans',sans-serif}
+.mob-sport-tab.active{background:var(--accent-l);color:var(--accent);border-color:var(--accent)}
+.config-layout{display:grid;grid-template-columns:200px 1fr 280px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-lg);min-height:580px}
+.config-left{background:var(--bg);border-right:1px solid var(--border)}
+.config-left-head,.config-right-head{padding:16px 18px 12px;border-bottom:1px solid var(--border)}
+.config-left-head h4,.config-right-head h4{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem}
+.config-sport-list{padding:6px 0}
+.csport-btn{width:100%;display:flex;align-items:center;gap:10px;padding:9px 18px;background:none;border:none;cursor:pointer;text-align:left;color:var(--ink2);font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;border-left:3px solid transparent;transition:background .15s,color .15s,border-color .15s}
+.csport-btn:hover{background:var(--bg2);color:var(--ink)}
+.csport-btn.active{background:var(--accent-l);color:var(--accent);border-left-color:var(--accent);font-weight:600}
+.csport-icon{font-size:1rem;width:20px;text-align:center}
+.config-canvas{background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;position:relative}
+.config-canvas-tag{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;background:var(--white);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:.7rem;font-weight:600;color:var(--green);box-shadow:var(--sh-sm);white-space:nowrap}
+.config-canvas-tag span{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.jersey-svg-main{width:220px;height:auto;filter:drop-shadow(0 14px 36px rgba(0,0,0,.18));transition:all .35s ease}
+.canvas-sport-name{margin-top:16px;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.config-right{border-left:1px solid var(--border);background:var(--white);display:flex;flex-direction:column}
+.config-body{padding:18px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:18px}
+.cfg-lbl{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block}
+.color-row{display:flex;flex-wrap:wrap;gap:7px}
+.cswatch{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .15s,box-shadow .15s}
+.cswatch:hover{transform:scale(1.18)}
+.cswatch.sel{box-shadow:0 0 0 2px var(--white),0 0 0 3.5px var(--ink)}
+.pattern-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.pat-btn{aspect-ratio:1;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--muted);transition:all .15s}
+.pat-btn:hover{border-color:var(--ink2);color:var(--ink);background:var(--bg2)}
+.pat-btn.active{border-color:var(--accent);background:var(--accent-l);color:var(--accent)}
+.text-field{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.text-field:focus{border-color:var(--accent);background:var(--white)}
+.text-field::placeholder{color:var(--muted)}
+.num-row{display:flex;gap:8px;align-items:center}
+.num-field{width:72px}
+.rand-btn{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px;font-size:.78rem;font-weight:600;cursor:pointer;color:var(--ink2);transition:all .15s;font-family:'DM Sans',sans-serif}
+.rand-btn:hover{background:var(--bg2);border-color:var(--ink2)}
+.config-footer{border-top:1px solid var(--border);padding:16px 18px}
+.price-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px}
+.price-from{font-size:.72rem;color:var(--muted)}
+.price-val{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:var(--ink);letter-spacing:-.03em}
+.qty-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.qty-btn{width:30px;height:30px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border);font-size:1rem;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center;transition:background .15s}
+.qty-btn:hover{background:var(--bg2)}
+.qty-val{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;min-width:26px;text-align:center}
+.qty-lbl{font-size:.75rem;color:var(--muted)}
+.quote-btn{width:100%;background:var(--ink);color:var(--white);border:none;border-radius:40px;padding:13px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.quote-btn:hover{background:var(--accent);transform:scale(1.01)}
+
+/* ── FEATURES ── */
+#features{background:var(--bg)}
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.feat-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:36px;transition:box-shadow .25s,transform .25s}
+.feat-card:hover{box-shadow:var(--sh-md);transform:translateY(-3px)}
+.feat-card.dark{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.feat-card.dark .feat-desc{color:rgba(255,255,255,.6)}
+.feat-icon{width:46px;height:46px;border-radius:12px;background:var(--accent-l);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:18px}
+.feat-card.dark .feat-icon{background:rgba(255,255,255,.08)}
+.feat-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:8px}
+.feat-desc{font-size:.85rem;color:var(--ink2);line-height:1.7}
+.feat-tag{display:inline-block;margin-top:14px;font-size:.7rem;font-weight:600;letter-spacing:.06em;color:var(--accent);background:var(--accent-l);padding:4px 10px;border-radius:20px}
+.feat-card.dark .feat-tag{color:var(--white);background:rgba(255,255,255,.1)}
+
+/* ── TESTIMONIALS ── */
+#testimonials{background:var(--white)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.testi-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:24px}
+.testi-stars{font-size:.85rem;margin-bottom:12px;color:#f5a623}
+.testi-quote{font-size:.875rem;line-height:1.7;color:var(--ink2);margin-bottom:18px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:var(--white);flex-shrink:0}
+.testi-name{font-size:.82rem;font-weight:600}
+.testi-role{font-size:.72rem;color:var(--muted)}
+
+/* ── TRUST ── */
+#trust{background:var(--bg2);padding:40px;overflow:hidden}
+.trust-lbl{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:24px}
+.logos-scroll{overflow:hidden;mask-image:linear-gradient(to right,transparent,black 8%,black 92%,transparent)}
+.logos-inner{display:flex;gap:48px;align-items:center;animation:marquee 28s linear infinite;width:max-content}
+.logo-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:#bbb;letter-spacing:.04em;white-space:nowrap}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:20px;width:100%;max-width:520px;box-shadow:var(--sh-lg);overflow:hidden;max-height:90vh;overflow-y:auto}
+.modal-head{padding:22px 24px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem}
+.modal-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);line-height:1;padding:4px}
+.modal-close:hover{color:var(--ink)}
+.modal-summary{background:var(--bg2);padding:14px 24px;font-size:.83rem;color:var(--ink2);border-bottom:1px solid var(--border)}
+.ms-row{display:flex;justify-content:space-between;padding:3px 0}
+.ms-row span:last-child{font-weight:600;color:var(--ink)}
+.modal-body{padding:22px 24px}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px}
+.form-input,.form-select,.form-textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);background:var(--white)}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--muted)}
+.form-textarea{min-height:76px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.submit-btn{width:100%;background:var(--ink);color:var(--white);border:none;border-radius:40px;padding:14px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:background .2s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.submit-btn:hover{background:var(--accent)}
+.form-note{font-size:.73rem;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5}
+
+/* ── CTA BANNER ── */
+#cta-banner{background:var(--ink);color:var(--white);padding:72px 40px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.cta-left h2{font-family:'Syne',sans-serif;font-weight:700;line-height:1.1;letter-spacing:-.02em;font-size:clamp(1.6rem,2.5vw,2.6rem);margin-bottom:10px}
+.cta-left p{font-size:.9rem;color:rgba(255,255,255,.5);max-width:480px;line-height:1.6}
+.cta-right{flex-shrink:0;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.btn-white{background:var(--white);color:var(--ink);font-size:.88rem;font-weight:600;padding:13px 26px;border-radius:40px;border:none;cursor:pointer;transition:background .2s,color .2s,transform .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-white:hover{background:var(--accent);color:var(--white);transform:translateY(-2px)}
+.cta-note-sm{font-size:.72rem;color:rgba(255,255,255,.3)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:56px 40px 32px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;letter-spacing:-.03em;color:var(--ink)}
+.footer-logo span{color:var(--accent)}
+.footer-tagline{font-size:.85rem;color:var(--muted);margin-top:8px;line-height:1.7;max-width:220px}
+.footer-col h5{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.06em;margin-bottom:14px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:.85rem;color:var(--muted);transition:color .2s}
+.footer-links a:hover{color:var(--ink)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:20px;border-top:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.footer-copy{font-size:.78rem;color:var(--muted)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--white);font-size:.875rem;font-weight:600;padding:11px 22px;border-radius:40px;box-shadow:var(--sh-md);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:9999;white-space:nowrap;max-width:calc(100vw - 40px);text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ══ TABLET ≤ 900px ══ */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links,.nav-btn{display:none}
+  .nav-ham{display:flex}
+
+  #hero{grid-template-columns:1fr;padding:90px 24px 56px;text-align:center;min-height:auto;gap:36px}
+  .hero-bg{width:340px;height:340px;top:-60px;right:-60px}
+  .hero-desc{margin:0 auto 32px}
+  .hero-actions{justify-content:center}
+  .hero-trust{justify-content:center}
+  .hero-right{order:-1}
+  .hero-jersey-wrap{max-width:360px}
+
+  #statsbar{grid-template-columns:repeat(2,1fr);padding:20px 24px}
+  .stat-item:nth-child(2){border-right:none}
+  .stat-item:nth-child(1),.stat-item:nth-child(2){border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:14px;margin-bottom:4px}
+
+  .section-wrap{padding:60px 24px}
+  .sports-grid{grid-template-columns:repeat(2,1fr)}
+  .steps-row{grid-template-columns:1fr;gap:2px}
+  .features-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr;gap:12px}
+
+  .config-layout{grid-template-columns:1fr;min-height:auto}
+  .config-left{display:none}
+  .mobile-sport-tabs{display:flex}
+  .config-canvas{padding:28px 20px;min-height:300px}
+  .config-right{border-left:none;border-top:1px solid var(--border)}
+
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px}
+  .footer-brand{grid-column:1/-1}
+
+  #cta-banner{padding:52px 24px;justify-content:center;text-align:center}
+  .cta-right{align-items:center}
+  .cta-note-sm{text-align:center}
+}
+
+/* ══ MOBILE ≤ 540px ══ */
+@media(max-width:540px){
+  .hero-title{font-size:2.2rem}
+  .hero-jersey-wrap{padding:20px 16px}
+  .hero-color-row{gap:6px}
+  .hcr-customize{width:100%;margin-top:6px}
+  .hcr-swatches{flex:none}
+
+  #statsbar{padding:16px 20px}
+  .stat-num{font-size:1.6rem}
+
+  .sports-grid{gap:10px}
+  .sport-card-img{height:100px;font-size:2.8rem}
+
+  .config-canvas{padding:20px 14px}
+  .jersey-svg-main{width:170px}
+  .config-body{padding:14px;gap:14px}
+  .config-footer{padding:14px}
+
+  .feat-card{padding:28px 22px}
+
+  .footer-grid{grid-template-columns:1fr}
+  .footer-brand{grid-column:auto}
+  footer{padding:40px 20px 24px}
+  .footer-bottom{flex-direction:column;align-items:flex-start}
+
+  #cta-banner{padding:44px 20px}
+
+  .modal-head{padding:16px 18px 14px}
+  .modal-body{padding:18px}
+  .modal-summary{padding:12px 18px}
+  .form-row{grid-template-columns:1fr}
+  #trust{padding:36px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">Kit<span>Craft</span></a>
+  <ul class="nav-links">
+    <li><a href="#sports">Sports</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#configurator">Design Tool</a></li>
+    <li><a href="#features">Why Us</a></li>
+  </ul>
+  <a class="nav-btn" href="#configurator">Start Designing →</a>
+  <div class="nav-ham" id="navHam" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sports" onclick="closeMenu()">Sports</a>
+  <a href="#how" onclick="closeMenu()">How It Works</a>
+  <a href="#configurator" onclick="closeMenu()">Design Tool</a>
+  <a href="#features" onclick="closeMenu()">Why Us</a>
+  <a href="#configurator" class="mob-cta" onclick="closeMenu()">Start Designing →</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-left">
+    <div class="hero-pill"><div class="hero-pill-dot"></div>Custom Sportswear Platform</div>
+    <h1 class="hero-title">Design your<br><em>perfect kit,</em><br>online.</h1>
+    <p class="hero-desc">Choose your sport, customise colors, add your logo and team name — receive premium sportswear in 2–5 weeks. No minimums.</p>
+    <div class="hero-actions">
+      <a href="#configurator" class="btn-primary">Open Design Tool →</a>
+      <a href="#how" class="btn-outline">How It Works</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-avatars">
+        <div class="trust-avatar" style="background:#1b4dff">MR</div>
+        <div class="trust-avatar" style="background:#0a8a4a">SC</div>
+        <div class="trust-avatar" style="background:#e84646">TL</div>
+        <div class="trust-avatar" style="background:#7c3aed">AK</div>
+      </div>
+      <div class="trust-text"><strong>25,000+ teams</strong> designed with KitCraft</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-jersey-wrap">
+      <div class="hero-jersey-label">
+        <span class="jersey-sport-badge" id="heroBadge">Cycling Jersey</span>
+        <span class="jersey-live"><span class="jersey-live-dot"></span>Live Preview</span>
+      </div>
+      <div class="hero-svg-wrap">
+        <svg id="heroJersey" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" style="width:170px;height:auto;filter:drop-shadow(0 10px 28px rgba(0,0,0,.15));transition:all .4s ease">
+          <path id="hBody" d="M40,30 L10,70 L30,80 L30,220 L170,220 L170,80 L190,70 L160,30 L130,20 Q100,10 70,20 Z" fill="#1b4dff"/>
+          <path id="hSL" d="M40,30 L10,70 L30,80 L50,55 Z" fill="#1038cc"/>
+          <path id="hSR" d="M160,30 L190,70 L170,80 L150,55 Z" fill="#1038cc"/>
+          <path id="hCollar" d="M70,20 Q100,35 130,20" fill="none" stroke="#1038cc" stroke-width="7" stroke-linecap="round"/>
+          <g id="hPattern" opacity="0.45"></g>
+          <text id="hTeam" x="100" y="112" text-anchor="middle" font-family="'Syne',sans-serif" font-weight="800" font-size="14" fill="white" opacity=".9">VELOCITY CC</text>
+          <text id="hNum" x="100" y="173" text-anchor="middle" font-family="'Syne',sans-serif" font-weight="800" font-size="46" fill="white" opacity=".85">7</text>
+        </svg>
+      </div>
+      <div class="hero-color-row">
+        <span class="hcr-label">Color:</span>
+        <div class="hcr-swatches">
+          <div class="hcr-swatch sel" style="background:#1b4dff" data-c="#1b4dff" data-a="#1038cc" onclick="heroColor(this)"></div>
+          <div class="hcr-swatch" style="background:#0a8a4a" data-c="#0a8a4a" data-a="#065e32" onclick="heroColor(this)"></div>
+          <div class="hcr-swatch" style="background:#cc2020" data-c="#cc2020" data-a="#991515" onclick="heroColor(this)"></div>
+          <div class="hcr-swatch" style="background:#111" data-c="#111111" data-a="#333" onclick="heroColor(this)"></div>
+          <div class="hcr-swatch" style="background:#7c3aed" data-c="#7c3aed" data-a="#5b21b6" onclick="heroColor(this)"></div>
+          <div class="hcr-swatch" style="background:#d97706" data-c="#d97706" data-a="#b45309" onclick="heroColor(this)"></div>
+        </div>
+        <span class="hcr-customize" onclick="goToConfig()">Full design →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div id="statsbar">
+  <div class="stat-item"><div class="stat-num">25<sub>K+</sub></div><div class="stat-lbl">Teams outfitted</div></div>
+  <div class="stat-item"><div class="stat-num">15<sub>+</sub></div><div class="stat-lbl">Sports categories</div></div>
+  <div class="stat-item"><div class="stat-num">20<sub>yrs</sub></div><div class="stat-lbl">In the industry</div></div>
+  <div class="stat-item"><div class="stat-num">2<sub>–5wk</sub></div><div class="stat-lbl">Avg delivery</div></div>
+</div>
+
+<!-- SPORTS -->
+<section id="sports">
+  <div class="section-wrap">
+    <div class="section-intro reveal">
+      <span class="lbl">Our Catalogue</span>
+      <h2 class="heading">Choose your sport</h2>
+      <p>From cycling jerseys to eSports uniforms — every category is fully customisable in our live designer.</p>
+    </div>
+    <div class="sports-grid reveal">
+      <a class="sport-card" href="#configurator" onclick="selectSport('cycling')">
+        <div class="sport-card-img" style="background:linear-gradient(135deg,#dce6ff,#c7d8ff)">🚴</div>
+        <div class="sport-card-body"><div class="sport-card-name">Cycling <span class="sport-card-arrow">↗</span></div><div class="sport-card-sub">Jerseys, bibs, windbreakers</div></div>
+      </a>
+      <a class="sport-card" href="#configurator" onclick="selectSport('soccer')">
+        <div class="sport-card-img" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">⚽</div>
+        <div class="sport-card-body"><div class="sport-card-name">Soccer <span class="sport-card-arrow">↗</span></div><div class="sport-card-sub">Jerseys, shorts, full kits</div></div>
+      </a>
+      <a class="sport-card" href="#configurator" onclick="selectSport('basketball')">
+        <div class="sport-card-img" style="background:linear-gradient(135deg,#fff3cd,#ffe69c)">🏀</div>
+        <div class="sport-card-body"><div class="sport-card-name">Basketball <span class="sport-card-arrow">↗</span></div><div class="sport-card-sub">Jerseys, shorts, warm-ups</div></div>
+      </a>
+      <a class="sport-card" href="#configurator" onclick="selectSport('running')">
+        <div class="sport-card-img" style="background:linear-gradient(135deg,#ffe4e4,#fecaca)">🏃</div>
+        <div class="sport-card-body"><div class="sport-card-name">Running <span class="sport-card-arrow">↗</span></div><div class="sport-card-sub">Singlets, shorts, jackets</div></div>
+      </a>
+      <a class="sport-card" href="#configurator" onclick="selectSport('hockey')">
+        <div class="sport-card-img" style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe)">🏒</div>
+        <div class="sport-card-body"><div class="sport-card-name">Hockey <span class="sport-card-arrow">↗</span></div><div class="sport-card-sub">Jerseys, pants, socks</div></div>
+      </a>
+      <a class="sport-card" href="#configurator" onclick="selectSport('volleyball')">
+        <div class="sport-card-img" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8)">🏐</div>
+        <div class="sport-card-body"><div class="sport-card-name">Volleyball <span class="sport-card-arrow">↗</span></div><div class="sport-card-sub">Jerseys, shorts, libero kits</div></div>
+      </a>
+      <a class="sport-card" href="#configurator" onclick="selectSport('esports')">
+        <div class="sport-card-img" style="background:linear-gradient(135deg,#f0fdf4,#d1fae5)">🎮</div>
+        <div class="sport-card-body"><div class="sport-card-name">eSports <span class="sport-card-arrow">↗</span></div><div class="sport-card-sub">Jerseys, hoodies</div></div>
+      </a>
+      <a class="sport-card" href="#configurator" onclick="selectSport('motocross')">
+        <div class="sport-card-img" style="background:linear-gradient(135deg,#fef9c3,#fef08a)">🏍️</div>
+        <div class="sport-card-body"><div class="sport-card-name">Motocross <span class="sport-card-arrow">↗</span></div><div class="sport-card-sub">Jerseys, pants, gloves</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+  <div class="section-wrap">
+    <div class="section-intro reveal">
+      <span class="lbl">The Process</span>
+      <h2 class="heading">From idea to doorstep<br>in three steps</h2>
+    </div>
+    <div class="steps-row reveal">
+      <div class="step-card">
+        <div class="step-num">STEP 01</div>
+        <div class="step-icon">🎽</div>
+        <div class="step-title">Pick your product</div>
+        <div class="step-desc">Browse 15+ sport categories and hundreds of product types. Choose a base template that suits your team's style.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 02</div>
+        <div class="step-icon">🎨</div>
+        <div class="step-title">Design in the live editor</div>
+        <div class="step-desc">Customise colors, patterns, team name, numbers — all in our live browser-based designer. See every change instantly. No software needed.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 03</div>
+        <div class="step-icon">📧</div>
+        <div class="step-title">Send us your order</div>
+        <div class="step-desc">Fill in your details and hit send. Your order request goes directly to our team and we reply within 24 hours with a confirmed quote.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIGURATOR -->
+<section id="configurator">
+  <div class="section-wrap">
+    <div class="section-intro reveal">
+      <span class="lbl">Live Designer</span>
+      <h2 class="heading">Design your kit now</h2>
+      <p>Pick a sport, choose your colours, add your team name and number. Every change updates instantly.</p>
+    </div>
+
+    <div class="mobile-sport-tabs" id="mobSportTabs">
+      <button class="mob-sport-tab active" onclick="selectSport('cycling')">🚴 Cycling</button>
+      <button class="mob-sport-tab" onclick="selectSport('soccer')">⚽ Soccer</button>
+      <button class="mob-sport-tab" onclick="selectSport('basketball')">🏀 Basketball</button>
+      <button class="mob-sport-tab" onclick="selectSport('running')">🏃 Running</button>
+      <button class="mob-sport-tab" onclick="selectSport('hockey')">🏒 Hockey</button>
+      <button class="mob-sport-tab" onclick="selectSport('volleyball')">🏐 Volleyball</button>
+      <button class="mob-sport-tab" onclick="selectSport('esports')">🎮 eSports</button>
+      <button class="mob-sport-tab" onclick="selectSport('motocross')">🏍️ Motocross</button>
+    </div>
+
+    <div class="config-layout reveal">
+      <div class="config-left">
+        <div class="config-left-head"><h4>Sport</h4></div>
+        <div class="config-sport-list">
+          <button class="csport-btn active" id="cbtn-cycling" onclick="selectSport('cycling')"><span class="csport-icon">🚴</span>Cycling</button>
+          <button class="csport-btn" id="cbtn-soccer" onclick="selectSport('soccer')"><span class="csport-icon">⚽</span>Soccer</button>
+          <button class="csport-btn" id="cbtn-basketball" onclick="selectSport('basketball')"><span class="csport-icon">🏀</span>Basketball</button>
+          <button class="csport-btn" id="cbtn-running" onclick="selectSport('running')"><span class="csport-icon">🏃</span>Running</button>
+          <button class="csport-btn" id="cbtn-hockey" onclick="selectSport('hockey')"><span class="csport-icon">🏒</span>Hockey</button>
+          <button class="csport-btn" id="cbtn-volleyball" onclick="selectSport('volleyball')"><span class="csport-icon">🏐</span>Volleyball</button>
+          <button class="csport-btn" id="cbtn-esports" onclick="selectSport('esports')"><span class="csport-icon">🎮</span>eSports</button>
+          <button class="csport-btn" id="cbtn-motocross" onclick="selectSport('motocross')"><span class="csport-icon">🏍️</span>Motocross</button>
+        </div>
+      </div>
+      <div class="config-canvas">
+        <div class="config-canvas-tag"><span></span>Live Preview</div>
+        <svg id="mainJersey" class="jersey-svg-main" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+          <path id="mBody" d="M40,30 L10,70 L30,80 L30,220 L170,220 L170,80 L190,70 L160,30 L130,20 Q100,10 70,20 Z" fill="#1b4dff"/>
+          <path id="mSL" d="M40,30 L10,70 L30,80 L50,55 Z" fill="#1038cc"/>
+          <path id="mSR" d="M160,30 L190,70 L170,80 L150,55 Z" fill="#1038cc"/>
+          <path id="mCollar" d="M70,20 Q100,35 130,20" fill="none" stroke="#1038cc" stroke-width="7" stroke-linecap="round"/>
+          <g id="mPattern" opacity="0.45"></g>
+          <text id="mTeam" x="100" y="112" text-anchor="middle" font-family="'Syne',sans-serif" font-weight="800" font-size="14" fill="white" opacity=".9">VELOCITY CC</text>
+          <text id="mNum" x="100" y="173" text-anchor="middle" font-family="'Syne',sans-serif" font-weight="800" font-size="46" fill="white" opacity=".85">7</text>
+        </svg>
+        <div class="canvas-sport-name" id="canvasSportLabel">Cycling</div>
+      </div>
+      <div class="config-right">
+        <div class="config-right-head"><h4>Customise</h4></div>
+        <div class="config-body">
+          <div>
+            <span class="cfg-lbl">Primary Colour</span>
+            <div class="color-row" id="priColors">
+              <div class="cswatch sel" style="background:#1b4dff" data-c="#1b4dff" onclick="setPri(this)"></div>
+              <div class="cswatch" style="background:#cc2020" data-c="#cc2020" onclick="setPri(this)"></div>
+              <div class="cswatch" style="background:#0a8a4a" data-c="#0a8a4a" onclick="setPri(this)"></div>
+              <div class="cswatch" style="background:#111" data-c="#111111" onclick="setPri(this)"></div>
+              <div class="cswatch" style="background:#d97706" data-c="#d97706" onclick="setPri(this)"></div>
+              <div class="cswatch" style="background:#7c3aed" data-c="#7c3aed" onclick="setPri(this)"></div>
+              <div class="cswatch" style="background:#0891b2" data-c="#0891b2" onclick="setPri(this)"></div>
+              <div class="cswatch" style="background:#f0f0ee;border:1.5px solid #ddd" data-c="#f0f0ee" onclick="setPri(this)"></div>
+            </div>
+          </div>
+          <div>
+            <span class="cfg-lbl">Accent Colour</span>
+            <div class="color-row" id="accColors">
+              <div class="cswatch" style="background:#1038cc" data-c="#1038cc" onclick="setAcc(this)"></div>
+              <div class="cswatch sel" style="background:#fff;border:1.5px solid #ddd" data-c="#ffffff" onclick="setAcc(this)"></div>
+              <div class="cswatch" style="background:#f5c518" data-c="#f5c518" onclick="setAcc(this)"></div>
+              <div class="cswatch" style="background:#111" data-c="#111111" onclick="setAcc(this)"></div>
+              <div class="cswatch" style="background:#cc2020" data-c="#cc2020" onclick="setAcc(this)"></div>
+              <div class="cswatch" style="background:#0a8a4a" data-c="#0a8a4a" onclick="setAcc(this)"></div>
+              <div class="cswatch" style="background:#e879f9" data-c="#e879f9" onclick="setAcc(this)"></div>
+              <div class="cswatch" style="background:#f97316" data-c="#f97316" onclick="setAcc(this)"></div>
+            </div>
+          </div>
+          <div>
+            <span class="cfg-lbl">Pattern</span>
+            <div class="pattern-row">
+              <div class="pat-btn active" onclick="setPat('solid',this)" title="Solid">▪</div>
+              <div class="pat-btn" onclick="setPat('stripes',this)" title="Stripes">☰</div>
+              <div class="pat-btn" onclick="setPat('diagonal',this)" title="Diagonal">⟋</div>
+              <div class="pat-btn" onclick="setPat('blocks',this)" title="Blocks">▓</div>
+              <div class="pat-btn" onclick="setPat('chevron',this)" title="Chevron">∧</div>
+              <div class="pat-btn" onclick="setPat('fade',this)" title="Fade">◑</div>
+            </div>
+          </div>
+          <div>
+            <span class="cfg-lbl">Team / Club Name</span>
+            <input class="text-field" id="teamInput" type="text" placeholder="VELOCITY CC" maxlength="14" oninput="setTeam(this.value)">
+          </div>
+          <div>
+            <span class="cfg-lbl">Player Number</span>
+            <div class="num-row">
+              <input class="text-field num-field" id="numInput" type="text" placeholder="7" maxlength="3" oninput="setNum(this.value)">
+              <button class="rand-btn" onclick="randNum()">🎲 Random</button>
+            </div>
+          </div>
+        </div>
+        <div class="config-footer">
+          <div class="price-row">
+            <div><div class="price-from">From</div><div class="price-val" id="configPrice">$72</div></div>
+            <div style="text-align:right;font-size:.72rem;color:var(--muted)">per unit<br>no minimum</div>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="chgQty(-1)">−</button>
+            <span class="qty-val" id="configQty">1</span>
+            <button class="qty-btn" onclick="chgQty(1)">+</button>
+            <span class="qty-lbl">units</span>
+          </div>
+          <button class="quote-btn" onclick="openModal()">Request a Quote →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-wrap">
+    <div class="section-intro reveal">
+      <span class="lbl">Why KitCraft</span>
+      <h2 class="heading">Premium quality,<br>zero compromise.</h2>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feat-card dark">
+        <div class="feat-icon">🏭</div>
+        <div class="feat-title">Manufactured in Germany</div>
+        <div class="feat-desc">Every piece is produced individually using sublimation printing on premium performance fabrics. Made under fair conditions — quality you can see and feel.</div>
+        <span class="feat-tag">ISO 9001 Certified</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⚡</div>
+        <div class="feat-title">Live Design Tool</div>
+        <div class="feat-desc">Our browser-based designer lets you see every change in real time. Set colors, patterns, player names and numbers — no software, works on any device.</div>
+        <span class="feat-tag">Works on mobile</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📏</div>
+        <div class="feat-title">Free Samples Programme</div>
+        <div class="feat-desc">Not sure about sizing? Order physical size samples before your full order. We deduct the cost when you place your team order. Zero risk.</div>
+        <span class="feat-tag">Risk-free sizing</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📧</div>
+        <div class="feat-title">Simple Email Ordering</div>
+        <div class="feat-desc">No account needed. Fill in our quick order form and your full kit spec goes directly to our team. We reply within 24 hours with your confirmed quote.</div>
+        <span class="feat-tag">Reply within 24hrs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-wrap">
+    <div class="section-intro reveal">
+      <span class="lbl">Customer Stories</span>
+      <h2 class="heading">Teams love KitCraft</h2>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"We designed our entire cycling club's jerseys in under an hour. The real-time preview made it so easy to agree on a design with 40 members."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:#1b4dff">MR</div>
+          <div><div class="testi-name">Marco Reinhardt</div><div class="testi-role">Velocity Cycling Club, Berlin</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"The quality exceeded our expectations. Sublimation is vibrant even after 60+ washes. Our players get compliments every match day."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:#0a8a4a">SC</div>
+          <div><div class="testi-name">Sophie Chen</div><div class="testi-role">FC Westside, Manchester</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"Sent our order by email on Monday, had a confirmed quote by Tuesday morning. Three weeks later the jerseys arrived — perfect quality."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:#7c3aed">AK</div>
+          <div><div class="testi-name">Alex Kowalski</div><div class="testi-role">Team Nova eSports, Warsaw</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section id="trust">
+  <div class="trust-lbl">Trusted by teams at</div>
+  <div class="logos-scroll">
+    <div class="logos-inner">
+      <span class="logo-name">Red Bull Racing</span><span class="logo-name">Allianz</span><span class="logo-name">Cisco Systems</span><span class="logo-name">IBM</span><span class="logo-name">DHL</span><span class="logo-name">Mercedes-Benz</span><span class="logo-name">Siemens</span><span class="logo-name">Sony</span><span class="logo-name">McDonald's</span><span class="logo-name">Unilever</span><span class="logo-name">BNP Paribas</span><span class="logo-name">IKEA</span>
+      <span class="logo-name">Red Bull Racing</span><span class="logo-name">Allianz</span><span class="logo-name">Cisco Systems</span><span class="logo-name">IBM</span><span class="logo-name">DHL</span><span class="logo-name">Mercedes-Benz</span><span class="logo-name">Siemens</span><span class="logo-name">Sony</span><span class="logo-name">McDonald's</span><span class="logo-name">Unilever</span><span class="logo-name">BNP Paribas</span><span class="logo-name">IKEA</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div id="cta-banner">
+  <div class="cta-left">
+    <h2 class="heading">Ready to design<br>your team's kit?</h2>
+    <p>Design in minutes and request a free quote by email — no commitment, no minimum order required.</p>
+  </div>
+  <div class="cta-right">
+    <button class="btn-white" onclick="goToConfig()">Open Design Tool →</button>
+    <span class="cta-note-sm">Free to design · Quote in 24 hrs · No minimum</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">Kit<span>Craft</span></div>
+      <p class="footer-tagline">Custom sportswear designed by you, made in Germany. Delivering to 40+ countries since 2004.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Sports</h5>
+      <ul class="footer-links">
+        <li><a href="#">Cycling</a></li><li><a href="#">Soccer</a></li><li><a href="#">Basketball</a></li><li><a href="#">Running</a></li><li><a href="#">View all →</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Support</h5>
+      <ul class="footer-links">
+        <li><a href="#">Size Chart</a></li><li><a href="#">Samples</a></li><li><a href="#">Get a Quote</a></li><li><a href="#">Delivery Times</a></li><li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul class="footer-links">
+        <li><a href="#">About Us</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 KitCraft. All rights reserved.</span>
+    <span class="footer-copy">📞 1-800-KITCRAFT &nbsp;|&nbsp; orders@kitcraft.com</span>
+  </div>
+</footer>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="overlayClick(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Request a Quote</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-summary" id="modalSummary"></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name *</label>
+          <input class="form-input" id="fName" type="text" placeholder="Marco">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name *</label>
+          <input class="form-input" id="lName" type="text" placeholder="Reinhardt">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input class="form-input" id="fEmail" type="email" placeholder="marco@yourclub.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone (optional)</label>
+        <input class="form-input" id="fPhone" type="tel" placeholder="+1 555 000 0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Club / Team / Company</label>
+        <input class="form-input" id="fClub" type="text" placeholder="Velocity Cycling Club">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Delivery Country *</label>
+        <select class="form-select" id="fCountry">
+          <option value="">Select country…</option>
+          <option>United States</option><option>United Kingdom</option><option>Germany</option><option>France</option><option>Australia</option><option>Canada</option><option>Netherlands</option><option>Bangladesh</option><option>India</option><option>Pakistan</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Additional Notes</label>
+        <textarea class="form-textarea" id="fNotes" placeholder="Size breakdown, logo link, deadline, special requests…"></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitOrder()"><span>Send Order Request</span><span>✉</span></button>
+      <p class="form-note">Your details go directly to our inbox. We reply within 24 hours with a confirmed quote.<br>No payment required at this stage.</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const S={sport:'cycling',pri:'#1b4dff',acc:'#1038cc',pat:'solid',team:'VELOCITY CC',num:'7'};
+let qty=1;
+const prices={cycling:72,soccer:58,basketball:62,running:55,hockey:78,volleyball:52,esports:48,motocross:85};
+const sportLabels={cycling:'Cycling',soccer:'Soccer',basketball:'Basketball',running:'Running',hockey:'Hockey',volleyball:'Volleyball',esports:'eSports',motocross:'Motocross'};
+const sportBadges={cycling:'Cycling Jersey',soccer:'Soccer Jersey',basketball:'Basketball Jersey',running:'Running Singlet',hockey:'Hockey Jersey',volleyball:'Volleyball Jersey',esports:'eSports Jersey',motocross:'Motocross Jersey'};
+const mobSports=['cycling','soccer','basketball','running','hockey','volleyball','esports','motocross'];
+
+function renderAll(){['h','m'].forEach(renderJersey)}
+function mkSVG(t){return document.createElementNS('http://www.w3.org/2000/svg',t)}
+function renderJersey(p){
+  const ids=p==='h'?['hBody','hSL','hSR','hCollar','hPattern','hTeam','hNum','heroJersey']:['mBody','mSL','mSR','mCollar','mPattern','mTeam','mNum','mainJersey'];
+  const [bodyId,slId,srId,colId,patId,teamId,numId,svgId]=ids;
+  const body=document.getElementById(bodyId);if(!body)return;
+  body.setAttribute('fill',S.pri);
+  document.getElementById(slId).setAttribute('fill',S.acc);
+  document.getElementById(srId).setAttribute('fill',S.acc);
+  document.getElementById(colId).setAttribute('stroke',S.acc);
+  const pat=document.getElementById(patId);pat.innerHTML='';
+  const svg=document.getElementById(svgId);
+  if(S.pat==='stripes'){for(let i=0;i<9;i++){const r=mkSVG('rect');r.setAttribute('x',28+i*16);r.setAttribute('y','30');r.setAttribute('width','8');r.setAttribute('height','190');r.setAttribute('fill',S.acc);r.setAttribute('opacity','.22');pat.appendChild(r)}}
+  else if(S.pat==='diagonal'){for(let i=-2;i<7;i++){const l=mkSVG('line');l.setAttribute('x1',10+i*30);l.setAttribute('y1','30');l.setAttribute('x2',10+i*30+55);l.setAttribute('y2','220');l.setAttribute('stroke',S.acc);l.setAttribute('stroke-width','12');l.setAttribute('opacity','.18');pat.appendChild(l)}}
+  else if(S.pat==='blocks'){const r=mkSVG('rect');r.setAttribute('x','30');r.setAttribute('y','140');r.setAttribute('width','140');r.setAttribute('height','80');r.setAttribute('fill',S.acc);r.setAttribute('opacity','.28');pat.appendChild(r)}
+  else if(S.pat==='chevron'){[[90,65,'14'],[110,85,'9']].forEach(([by,ty,sw])=>{const p2=mkSVG('polyline');p2.setAttribute('points',`30,${by} 100,${ty} 170,${by}`);p2.setAttribute('fill','none');p2.setAttribute('stroke',S.acc);p2.setAttribute('stroke-width',sw);p2.setAttribute('opacity','.28');pat.appendChild(p2)})}
+  else if(S.pat==='fade'){let defs=svg.querySelector('defs');if(!defs){defs=mkSVG('defs');svg.prepend(defs)}const gid='fg_'+p;defs.innerHTML=`<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${S.acc}" stop-opacity=".45"/><stop offset="100%" stop-color="${S.acc}" stop-opacity="0"/></linearGradient>`;const r=mkSVG('rect');r.setAttribute('x','28');r.setAttribute('y','28');r.setAttribute('width','144');r.setAttribute('height','194');r.setAttribute('fill',`url(#${gid})`);pat.appendChild(r)}
+  const lt=isLight(S.pri)?'#111':'#fff';
+  const teamEl=document.getElementById(teamId),numEl=document.getElementById(numId);
+  teamEl.textContent=S.team||'YOUR TEAM';numEl.textContent=S.num||'–';
+  teamEl.setAttribute('fill',lt);numEl.setAttribute('fill',lt);
+}
+function isLight(h){h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return(r*.299+g*.587+b*.114)>145}
+
+function selectSport(sport){
+  S.sport=sport;
+  document.querySelectorAll('.csport-btn').forEach(b=>b.classList.remove('active'));
+  const cb=document.getElementById('cbtn-'+sport);if(cb)cb.classList.add('active');
+  document.querySelectorAll('.mob-sport-tab').forEach((b,i)=>b.classList.toggle('active',mobSports[i]===sport));
+  document.getElementById('configPrice').textContent='$'+(prices[sport]||58);
+  const csl=document.getElementById('canvasSportLabel');if(csl)csl.textContent=sportLabels[sport]||sport;
+  const hb=document.getElementById('heroBadge');if(hb)hb.textContent=sportBadges[sport]||sport;
+  renderAll();
+}
+function setPri(el){document.querySelectorAll('#priColors .cswatch').forEach(s=>s.classList.remove('sel'));el.classList.add('sel');S.pri=el.dataset.c;renderAll()}
+function setAcc(el){document.querySelectorAll('#accColors .cswatch').forEach(s=>s.classList.remove('sel'));el.classList.add('sel');S.acc=el.dataset.c;renderAll()}
+function setPat(n,el){document.querySelectorAll('.pat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');S.pat=n;renderAll()}
+function setTeam(v){S.team=v.toUpperCase();renderAll()}
+function setNum(v){S.num=v;renderAll()}
+function randNum(){const n=Math.floor(Math.random()*99)+1;document.getElementById('numInput').value=n;S.num=String(n);renderAll()}
+function chgQty(d){qty=Math.max(1,qty+d);document.getElementById('configQty').textContent=qty}
+function heroColor(el){document.querySelectorAll('.hcr-swatch').forEach(s=>s.classList.remove('sel'));el.classList.add('sel');S.pri=el.dataset.c;S.acc=el.dataset.a;renderAll()}
+function goToConfig(){document.getElementById('configurator').scrollIntoView({behavior:'smooth'})}
+function toggleMenu(){document.getElementById('navHam').classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open')}
+function closeMenu(){document.getElementById('navHam').classList.remove('open');document.getElementById('mobileMenu').classList.remove('open')}
+
+function openModal(){
+  document.getElementById('modalSummary').innerHTML=`
+    <div class="ms-row"><span>Sport</span><span>${sportLabels[S.sport]} Jersey</span></div>
+    <div class="ms-row"><span>Team Name</span><span>${S.team||'—'}</span></div>
+    <div class="ms-row"><span>Number</span><span>${S.num||'—'}</span></div>
+    <div class="ms-row"><span>Primary Color</span><span><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${S.pri};vertical-align:middle;margin-right:4px;border:1px solid rgba(0,0,0,.1)"></span>${S.pri}</span></div>
+    <div class="ms-row"><span>Pattern</span><span style="text-transform:capitalize">${S.pat}</span></div>
+    <div class="ms-row"><span>Quantity</span><span>${qty} unit${qty>1?'s':''}</span></div>
+    <div class="ms-row"><span>Est. Price</span><span>From $${(prices[S.sport]||58)*qty} total</span></div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow=''}
+function overlayClick(e){if(e.target===document.getElementById('modalOverlay'))closeModal()}
+
+function submitOrder(){
+  const fn=document.getElementById('fName').value.trim();
+  const ln=document.getElementById('lName').value.trim();
+  const em=document.getElementById('fEmail').value.trim();
+  const country=document.getElementById('fCountry').value;
+  if(!fn||!ln){toast('Please enter your name');return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){toast('Please enter a valid email address');return}
+  if(!country){toast('Please select your delivery country');return}
+  const ph=document.getElementById('fPhone').value.trim();
+  const club=document.getElementById('fClub').value.trim();
+  const notes=document.getElementById('fNotes').value.trim();
+  const subject=encodeURIComponent(`KitCraft Order — ${sportLabels[S.sport]} — ${S.team||'No team name'} — Qty: ${qty}`);
+  const body=encodeURIComponent(`NEW KITCRAFT ORDER REQUEST\n${'='.repeat(36)}\n\nCUSTOMER DETAILS\nName:       ${fn} ${ln}\nEmail:      ${em}\nPhone:      ${ph||'Not provided'}\nClub/Team:  ${club||'Not provided'}\nCountry:    ${country}\n\nORDER DETAILS\nSport:      ${sportLabels[S.sport]} Jersey\nTeam Name:  ${S.team||'Not set'}\nNumber:     ${S.num||'Not set'}\nPrimary:    ${S.pri}\nAccent:     ${S.acc}\nPattern:    ${S.pat}\nQuantity:   ${qty} unit${qty>1?'s':''}\nEst. Price: From $${(prices[S.sport]||58)*qty} total\n\nADDITIONAL NOTES\n${notes||'None'}\n\n${'='.repeat(36)}\nSent via KitCraft Design Tool`);
+  window.location.href=`mailto:orders@kitcraft.com?subject=${subject}&body=${body}`;
+  closeModal();
+  toast('✓ Opening your email app with full order details…');
+}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200)}
+
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+renderAll();
+</script>
+</body>
+</html>
